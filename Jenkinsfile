@@ -30,8 +30,8 @@ pipeline {
         stage("build docker image") {
             steps {
                 script {
-                    echo "building the application version"
-                    withCredentials([usernamePassword(CredentialsId: 'docker-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                    echo "building the docker image"
+                    withCredentials([usernamePassword(credentialsId: 'docker-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
                       sh 'docker build -t yheancarh/java-maven-app:jf .'
                       sh "echo $PASS | docker login -u $USER --password-stdin"
                       sh 'docker push yheancarh/java-maven-app:jf'
