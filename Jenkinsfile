@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+      maven 'maven-3.6'
+    }
     stages {
         stage("init") {
             steps {
@@ -8,17 +11,31 @@ pipeline {
                 }
             }
         }
-        stage("build") {
-            steps {
-                script {
-                    echo "building the application version"
-                }
-            }
-        }
         stage("test") {
             steps {
                 script {
                     echo "testing the application version"
+                    sh 'mvn test'
+                }
+            }
+        }
+        stage("build jar") {
+            steps {
+                script {
+                    echo "building the application version"
+                    sh 'mvn package'
+                }
+            }
+        }
+        stage("build docker image") {
+            steps {
+                script {
+                    echo "building the application version"
+                    withCredentials([usernamePassword(CredentialsId: 'docker-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                      sh 'docker build -t yheancarh/java-maven-app:jf .'
+                      sh "echo $PASS | docker login -u $USER --password-stdin"
+                      sh 'docker push yheancarh/java-maven-app:jf'
+                    }
                 }
             }
         }
