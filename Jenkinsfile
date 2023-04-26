@@ -1,4 +1,4 @@
-def gv
+CODE_CHANGES = getGitChanges()
 
 pipeline {
     agent any
@@ -6,33 +6,46 @@ pipeline {
         stage("init") {
             steps {
                 script {
-                    gv = load "script.groovy"
+                    echo "initialization"
                 }
             }
         }
-        stage("build jar") {
+        stage("build") {
+            when {
+              expression {
+                BRANCH_NAME = 'dev' and CODE_CHANGES = true
+              }
+            }
             steps {
                 script {
-                    echo "building jar"
-                    //gv.buildJar()
+                    echo "building the application"
                 }
             }
         }
-        stage("build image") {
+        stage("test") {
             steps {
                 script {
-                    echo "building image"
-                    //gv.buildImage()
+                    echo "testing the application"
                 }
             }
         }
         stage("deploy") {
             steps {
                 script {
-                    echo "deploying"
-                    //gv.deployApp()
+                    echo "deploying the application"
                 }
             }
         }
     }   
+    post {
+      always {
+        echo "Post always"
+      }
+      success {
+        echo "On success only"
+      }
+      failure {
+        echo "On failure only"
+      }
+    }
 }
