@@ -33,7 +33,7 @@ pipeline {
                     echo "building the docker image"
                     withCredentials([usernamePassword(credentialsId: 'docker-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
                       sh 'docker build -t yheancarh/java-maven-app:jf .'
-                      sh "docker login -u $USER -p"
+                      sh "docker login -u $USER"
                       sh "echo $PASS"
                       sh 'docker push yheancarh/java-maven-app:jf'
                     }
