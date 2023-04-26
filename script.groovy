@@ -11,9 +11,9 @@ def buildJar() {
 def buildImage() {
     echo "building the docker image..."
     withCredentials([usernamePassword(credentialsId: 'docker-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-        sh 'docker build -t yheancarh/java-maven-app:jma-2.0 .'
-        sh "echo $PASS | docker login -u $USER --password-stdin"
-        sh 'docker push yheancarh/java-maven-app:jma-2.0'
+        sh 'docker build -t 13.40.179.85:8083/java-maven-app:jma-2.0 .'
+        sh "echo $PASS | docker login -u $USER --password-stdin 13.40.179.85:8083"
+        sh 'docker push 13.40.179.85:8083/java-maven-app:jma-2.0'
     }
 } 
 
