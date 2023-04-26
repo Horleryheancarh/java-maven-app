@@ -35,7 +35,7 @@ pipeline {
                     ]) {
                       sh "cat ${USER} ${PWD}"
                     }
-                    echo "deploying the ${SERVER_CREDENTIALS}"
+                    echo "deploying using ${SERVER_CREDENTIALS}"
                 }
             }
         }
