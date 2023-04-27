@@ -2,37 +2,71 @@ def gv
 
 pipeline {
     agent any
+    tools {
+      maven 'maven-3.6'
+    }
     stages {
         stage("init") {
             steps {
                 script {
+                    echo "initialization"
                     gv = load "script.groovy"
                 }
             }
         }
-        stage("build jar") {
+        stage("test") {
             steps {
                 script {
-                    echo "building jar"
-                    //gv.buildJar()
+                    gv.testApp()
                 }
             }
         }
-        stage("build image") {
+        stage("build jar") {
+            when {
+              expression {
+                BRANCH_NAME == 'master'
+              }
+            }
             steps {
                 script {
-                    echo "building image"
-                    //gv.buildImage()
+                    gv.buildJar()
+                }
+            }
+        }
+        stage("build docker image") {
+            when {
+              expression {
+                BRANCH_NAME == 'master'
+              }
+            }
+            steps {
+                script {
+                      gv.buildImage()
                 }
             }
         }
         stage("deploy") {
+            when {
+              expression {
+                BRANCH_NAME == 'master'
+              }
+            }
             steps {
                 script {
-                    echo "deploying"
-                    //gv.deployApp()
+                    gv.deployApp()
                 }
             }
         }
     }   
+    post {
+      always {
+        echo "Post always"
+      }
+      success {
+        echo "On success only"
+      }
+      failure {
+        echo "On failure only"
+      }
+    }
 }
