@@ -1,5 +1,6 @@
 def testApp() {
   echo "testing the application version"
+  echo "running pipeline for branch $BRANCH_NAME"
   sh 'mvn test'
 }
 
