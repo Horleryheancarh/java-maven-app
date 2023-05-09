@@ -23,9 +23,9 @@ def buildImage() {
     echo "building the docker image..."
     withCredentials([usernamePassword(credentialsId: 'nexus-docker-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
         echo "$USER $PASS"
-        sh "docker build -t 13.40.179.85:8083/java-maven-app:$IMAGE_NAME ."
+        sh "docker build -t 13.40.179.85:8083/java-maven-app:${IMAGE_NAME} ."
         sh "echo $PASS | docker login -u $USER --password-stdin 13.40.179.85:8083"
-        sh "docker push 13.40.179.85:8083/java-maven-app:$IMAGE_NAME"
+        sh "docker push 13.40.179.85:8083/java-maven-app:${IMAGE_NAME}"
     }
 } 
 
